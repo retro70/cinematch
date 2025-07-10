@@ -147,47 +147,70 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
 
   return (
     <>
-      <div className="bg-slate-800 rounded-xl p-6 mb-8">
-        <div className="flex items-center justify-end mb-6 gap-2">
+      <div className="bg-slate-800 rounded-xl p-3 sm:p-6 mb-6 sm:mb-8">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-end mb-4 sm:mb-6 gap-2">
           {onEditProfile && (
             <button
               onClick={onEditProfile}
-              className="flex items-center space-x-2 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white px-4 py-2 rounded-xl transition-all duration-200 font-medium shadow-lg"
+              className="flex items-center space-x-2 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white px-3 sm:px-4 py-2 rounded-xl transition-all duration-200 font-medium shadow-lg text-sm"
             >
-              <User className="h-4 w-4" />
+              <User className="h-3 w-3 sm:h-4 sm:w-4" />
               <span>Profili Düzenle</span>
             </button>
           )}
           <button
             onClick={() => setShowSkippedModal(true)}
-            className="flex items-center space-x-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white px-4 py-2 rounded-xl transition-all duration-200 font-medium shadow-lg"
+            className="flex items-center space-x-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white px-3 sm:px-4 py-2 rounded-xl transition-all duration-200 font-medium shadow-lg text-sm"
           >
-            <Eye className="h-4 w-4" />
+            <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
             <span>Atlananlar</span>
           </button>
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex space-x-1 mb-6 bg-slate-700 rounded-lg p-1">
-          {[
-            { id: 'overview', label: 'Genel Bakış', icon: Eye },
-            { id: 'people', label: 'Kişiler', icon: Users },
-            { id: 'stats', label: 'İstatistikler', icon: BarChart3 },
-            { id: 'learning', label: 'Gerçek Zamanlı Öğrenme', icon: Zap }
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 flex-1 justify-center ${
-                activeTab === tab.id
-                  ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-600'
-              }`}
+        <div className="mb-4 sm:mb-6">
+          {/* Mobile Tab Selector */}
+          <div className="sm:hidden">
+            <select
+              value={activeTab}
+              onChange={(e) => setActiveTab(e.target.value as any)}
+              className="w-full bg-slate-700 text-white rounded-lg p-3 text-sm font-medium border border-slate-600"
             >
-              <tab.icon className="h-4 w-4" />
-              <span>{tab.label}</span>
-            </button>
-          ))}
+              {[
+                { id: 'overview', label: 'Genel Bakış', icon: Eye },
+                { id: 'people', label: 'Kişiler', icon: Users },
+                { id: 'stats', label: 'İstatistikler', icon: BarChart3 },
+                { id: 'learning', label: 'Gerçek Zamanlı Öğrenme', icon: Zap }
+              ].map((tab) => (
+                <option key={tab.id} value={tab.id}>
+                  {tab.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          
+          {/* Desktop Tab Navigation */}
+          <div className="hidden sm:flex space-x-1 bg-slate-700 rounded-lg p-1">
+            {[
+              { id: 'overview', label: 'Genel Bakış', icon: Eye },
+              { id: 'people', label: 'Kişiler', icon: Users },
+              { id: 'stats', label: 'İstatistikler', icon: BarChart3 },
+              { id: 'learning', label: 'Gerçek Zamanlı Öğrenme', icon: Zap }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`flex items-center space-x-1 sm:space-x-2 px-2 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium transition-all duration-200 flex-1 justify-center ${
+                  activeTab === tab.id
+                    ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-600'
+                }`}
+              >
+                <tab.icon className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span className="hidden md:inline">{tab.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Tab Content */}
@@ -218,19 +241,19 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
             )}
 
             {/* Radar Chart and Top Genres */}
-            <div className="grid lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               <GenreRadarChart profile={profile} genres={genres} />
               
-              <div className="bg-slate-700 rounded-lg p-4">
-                <div className="flex items-center space-x-2 mb-4">
-                  <Heart className="h-4 w-4 text-red-400" />
+              <div className="bg-slate-700 rounded-lg p-3 sm:p-4">
+                <div className="flex items-center space-x-2 mb-3 sm:mb-4">
+                  <Heart className="h-3 w-3 sm:h-4 sm:w-4 text-red-400" />
                   <h3 className="font-semibold text-white text-sm">Tür Tercihlerin</h3>
                 </div>
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   {getTopGenres().map((genre, index) => (
                     <div key={index} className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
-                        <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                        <span className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-xs font-bold ${
                           index === 0 ? 'bg-amber-500 text-white' :
                           index === 1 ? 'bg-slate-500 text-white' :
                           index === 2 ? 'bg-orange-600 text-white' :
@@ -238,16 +261,16 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
                         }`}>
                           {index + 1}
                         </span>
-                        <span className="text-slate-300 text-sm">{genre.name}</span>
+                        <span className="text-slate-300 text-xs sm:text-sm">{genre.name}</span>
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <div className="w-16 bg-slate-600 rounded-full h-2">
+                      <div className="flex items-center space-x-1 sm:space-x-2">
+                        <div className="w-12 sm:w-16 bg-slate-600 rounded-full h-2">
                           <div 
                             className="bg-gradient-to-r from-amber-500 to-orange-500 h-2 rounded-full"
                             style={{ width: `${Math.min(100, parseFloat(genre.percentage))}%` }}
                           ></div>
                         </div>
-                        <span className="text-slate-400 text-xs w-10 text-right">%{genre.percentage}</span>
+                        <span className="text-slate-400 text-xs w-8 sm:w-10 text-right">%{genre.percentage}</span>
                       </div>
                     </div>
                   ))}
@@ -258,36 +281,36 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
         )}
 
         {activeTab === 'people' && (
-          <div className="grid lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {/* Favorite Actors */}
-            <div className="bg-slate-700 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-4">
+            <div className="bg-slate-700 rounded-lg p-3 sm:p-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 sm:mb-4 gap-2 sm:gap-0">
                 <div className="flex items-center space-x-2">
-                  <Users className="h-4 w-4 text-green-400" />
+                  <Users className="h-3 w-3 sm:h-4 sm:w-4 text-green-400" />
                   <h3 className="font-semibold text-white text-sm">Favori Oyuncular</h3>
                 </div>
                 {getTopActors().length > 0 && (
                   <button
                     onClick={() => setShowActorsModal(true)}
-                    className="text-green-400 hover:text-green-300 text-xs flex items-center space-x-1"
+                    className="text-green-400 hover:text-green-300 text-xs flex items-center space-x-1 self-start sm:self-auto"
                   >
                     <Film className="h-3 w-3" />
                     <span>İçerikleri Gör</span>
                   </button>
                 )}
               </div>
-              <div className="space-y-2 max-h-64 overflow-y-auto">
+              <div className="space-y-2 max-h-48 sm:max-h-64 overflow-y-auto">
                 {getTopActors().map((actor, index) => (
                   <div key={index} className="flex items-center justify-between py-1">
                     <div className="flex items-center space-x-2">
-                      <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${
+                      <span className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center text-xs font-bold ${
                         index < 3 ? 'bg-green-500 text-white' : 'bg-slate-600 text-slate-300'
                       }`}>
                         {index + 1}
                       </span>
-                      <span className="text-slate-300 text-xs">{actor.name}</span>
+                      <span className="text-slate-300 text-xs truncate">{actor.name}</span>
                     </div>
-                    <div className="flex items-center space-x-1">
+                    <div className="flex items-center space-x-1 flex-shrink-0">
                       <Star className="h-3 w-3 text-amber-400 fill-current" />
                       <span className="text-amber-400 text-xs font-medium">{actor.count.toFixed(1)}</span>
                     </div>
@@ -297,34 +320,34 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
             </div>
 
             {/* Favorite Directors */}
-            <div className="bg-slate-700 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-4">
+            <div className="bg-slate-700 rounded-lg p-3 sm:p-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 sm:mb-4 gap-2 sm:gap-0">
                 <div className="flex items-center space-x-2">
-                  <Film className="h-4 w-4 text-blue-400" />
+                  <Film className="h-3 w-3 sm:h-4 sm:w-4 text-blue-400" />
                   <h3 className="font-semibold text-white text-sm">Favori Yönetmenler</h3>
                 </div>
                 {getTopDirectors().length > 0 && (
                   <button
                     onClick={() => setShowDirectorsModal(true)}
-                    className="text-blue-400 hover:text-blue-300 text-xs flex items-center space-x-1"
+                    className="text-blue-400 hover:text-blue-300 text-xs flex items-center space-x-1 self-start sm:self-auto"
                   >
                     <Film className="h-3 w-3" />
                     <span>İçerikleri Gör</span>
                   </button>
                 )}
               </div>
-              <div className="space-y-2 max-h-64 overflow-y-auto">
+              <div className="space-y-2 max-h-48 sm:max-h-64 overflow-y-auto">
                 {getTopDirectors().map((director, index) => (
                   <div key={index} className="flex items-center justify-between py-1">
                     <div className="flex items-center space-x-2">
-                      <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${
+                      <span className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center text-xs font-bold ${
                         index < 3 ? 'bg-blue-500 text-white' : 'bg-slate-600 text-slate-300'
                       }`}>
                         {index + 1}
                       </span>
-                      <span className="text-slate-300 text-xs">{director.name}</span>
+                      <span className="text-slate-300 text-xs truncate">{director.name}</span>
                     </div>
-                    <div className="flex items-center space-x-1">
+                    <div className="flex items-center space-x-1 flex-shrink-0">
                       <Star className="h-3 w-3 text-amber-400 fill-current" />
                       <span className="text-amber-400 text-xs font-medium">{director.count.toFixed(1)}</span>
                     </div>
@@ -334,32 +357,32 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
             </div>
 
             {/* Favorite Writers */}
-            <div className="bg-slate-700 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-4">
+            <div className="bg-slate-700 rounded-lg p-3 sm:p-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 sm:mb-4 gap-2 sm:gap-0">
                 <div className="flex items-center space-x-2">
-                  <Award className="h-4 w-4 text-purple-400" />
+                  <Award className="h-3 w-3 sm:h-4 sm:w-4 text-purple-400" />
                   <h3 className="font-semibold text-white text-sm">Favori Senaristler</h3>
                 </div>
                 <button
                   onClick={() => setShowWritersModal(true)}
-                  className="text-purple-400 hover:text-purple-300 text-xs flex items-center space-x-1"
+                  className="text-purple-400 hover:text-purple-300 text-xs flex items-center space-x-1 self-start sm:self-auto"
                 >
                   <Film className="h-3 w-3" />
                   <span>İçerikleri Gör</span>
                 </button>
               </div>
-              <div className="space-y-2 max-h-64 overflow-y-auto">
+              <div className="space-y-2 max-h-48 sm:max-h-64 overflow-y-auto">
                 {getTopWriters().map((writer, index) => (
                   <div key={index} className="flex items-center justify-between py-1">
                     <div className="flex items-center space-x-2">
-                      <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${
+                      <span className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center text-xs font-bold ${
                         index < 3 ? 'bg-purple-500 text-white' : 'bg-slate-600 text-slate-300'
                       }`}>
                         {index + 1}
                       </span>
-                      <span className="text-slate-300 text-xs">{writer.name}</span>
+                      <span className="text-slate-300 text-xs truncate">{writer.name}</span>
                     </div>
-                    <div className="flex items-center space-x-1">
+                    <div className="flex items-center space-x-1 flex-shrink-0">
                       <Star className="h-3 w-3 text-amber-400 fill-current" />
                       <span className="text-amber-400 text-xs font-medium">{writer.count.toFixed(1)}</span>
                     </div>
@@ -371,33 +394,33 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
         )}
 
         {activeTab === 'stats' && (
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Quick Stats Cards */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 border border-blue-500/30 rounded-lg p-4 text-center">
-                <div className="text-2xl font-bold text-blue-400">{stats.totalRatings}</div>
-                <div className="text-blue-300 text-sm">Toplam Puanlama</div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
+              <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 border border-blue-500/30 rounded-lg p-3 sm:p-4 text-center">
+                <div className="text-lg sm:text-2xl font-bold text-blue-400">{stats.totalRatings}</div>
+                <div className="text-blue-300 text-xs sm:text-sm">Toplam Puanlama</div>
               </div>
-              <div className="bg-gradient-to-br from-green-500/20 to-green-600/20 border border-green-500/30 rounded-lg p-4 text-center">
-                <div className="text-2xl font-bold text-green-400">{stats.movieCount}</div>
-                <div className="text-green-300 text-sm">Film</div>
+              <div className="bg-gradient-to-br from-green-500/20 to-green-600/20 border border-green-500/30 rounded-lg p-3 sm:p-4 text-center">
+                <div className="text-lg sm:text-2xl font-bold text-green-400">{stats.movieCount}</div>
+                <div className="text-green-300 text-xs sm:text-sm">Film</div>
               </div>
-              <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 border border-purple-500/30 rounded-lg p-4 text-center">
-                <div className="text-2xl font-bold text-purple-400">{stats.tvCount}</div>
-                <div className="text-purple-300 text-sm">Dizi</div>
+              <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 border border-purple-500/30 rounded-lg p-3 sm:p-4 text-center">
+                <div className="text-lg sm:text-2xl font-bold text-purple-400">{stats.tvCount}</div>
+                <div className="text-purple-300 text-xs sm:text-sm">Dizi</div>
               </div>
-              <div className="bg-gradient-to-br from-amber-500/20 to-amber-600/20 border border-amber-500/30 rounded-lg p-4 text-center">
-                <div className="text-2xl font-bold text-amber-400">{profile.averageScore.toFixed(1)}</div>
-                <div className="text-amber-300 text-sm">Ortalama Puan</div>
+              <div className="bg-gradient-to-br from-amber-500/20 to-amber-600/20 border border-amber-500/30 rounded-lg p-3 sm:p-4 text-center">
+                <div className="text-lg sm:text-2xl font-bold text-amber-400">{profile.averageScore.toFixed(1)}</div>
+                <div className="text-amber-300 text-xs sm:text-sm">Ortalama Puan</div>
               </div>
             </div>
 
             {/* Detailed Statistics */}
-            <div className="grid lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               {/* Rating Distribution */}
-              <div className="bg-slate-700 rounded-lg p-4">
-                <div className="flex items-center space-x-2 mb-4">
-                  <BarChart3 className="h-4 w-4 text-amber-400" />
+              <div className="bg-slate-700 rounded-lg p-3 sm:p-4">
+                <div className="flex items-center space-x-2 mb-3 sm:mb-4">
+                  <BarChart3 className="h-3 w-3 sm:h-4 sm:w-4 text-amber-400" />
                   <h3 className="font-semibold text-white text-sm">Puan Dağılımı</h3>
                 </div>
                 <div className="space-y-3">
@@ -426,9 +449,9 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
               </div>
 
               {/* Content Type Comparison */}
-              <div className="bg-slate-700 rounded-lg p-4">
-                <div className="flex items-center space-x-2 mb-4">
-                  <Zap className="h-4 w-4 text-purple-400" />
+              <div className="bg-slate-700 rounded-lg p-3 sm:p-4">
+                <div className="flex items-center space-x-2 mb-3 sm:mb-4">
+                  <Zap className="h-3 w-3 sm:h-4 sm:w-4 text-purple-400" />
                   <h3 className="font-semibold text-white text-sm">İçerik Türü Analizi</h3>
                 </div>
                 <div className="space-y-4">
@@ -478,9 +501,9 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
               </div>
 
               {/* Period Preferences */}
-              <div className="bg-slate-700 rounded-lg p-4">
-                <div className="flex items-center space-x-2 mb-4">
-                  <Calendar className="h-4 w-4 text-blue-400" />
+              <div className="bg-slate-700 rounded-lg p-3 sm:p-4">
+                <div className="flex items-center space-x-2 mb-3 sm:mb-4">
+                  <Calendar className="h-3 w-3 sm:h-4 sm:w-4 text-blue-400" />
                   <h3 className="font-semibold text-white text-sm">Dönem Tercihleri</h3>
                 </div>
                 <div className="space-y-2">
@@ -502,9 +525,9 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({
               </div>
 
               {/* Profile Metrics */}
-              <div className="bg-slate-700 rounded-lg p-4">
-                <div className="flex items-center space-x-2 mb-4">
-                  <Sparkles className="h-4 w-4 text-amber-400" />
+              <div className="bg-slate-700 rounded-lg p-3 sm:p-4">
+                <div className="flex items-center space-x-2 mb-3 sm:mb-4">
+                  <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-amber-400" />
                   <h3 className="font-semibold text-white text-sm">Profil Metrikleri</h3>
                 </div>
                 <div className="space-y-3">

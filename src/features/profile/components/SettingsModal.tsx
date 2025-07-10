@@ -219,24 +219,24 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
   ];
 
   return (
-    <div className="w-full min-h-screen bg-slate-900 flex flex-col">
-      <div className="bg-slate-800 rounded-xl p-6 w-full max-w-3xl mx-auto flex flex-col min-h-[60vh]">
+    <div className="w-full min-h-screen bg-slate-900 flex flex-col px-2 sm:px-4">
+      <div className="bg-slate-800 rounded-xl p-3 sm:p-6 w-full max-w-4xl mx-auto flex flex-col min-h-[60vh]">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-          <div className="flex items-center space-x-3">
-            <div className="bg-gradient-to-r from-amber-400 to-orange-500 p-2 rounded-lg shadow">
-              <Settings className="h-6 w-6 text-white" />
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <div className="bg-gradient-to-r from-amber-400 to-orange-500 p-1.5 sm:p-2 rounded-lg shadow">
+              <Settings className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-white tracking-tight">
+              <h2 className="text-lg sm:text-2xl font-bold text-white tracking-tight">
                 {isInitialSetup ? 'İlk Kurulum' : 'Ayarlar'}
               </h2>
-              <p className="text-slate-300 text-sm mt-1">
+              <p className="text-slate-300 text-xs sm:text-sm mt-1 hidden sm:block">
                 {isInitialSetup ? 'CineMatch\'i kişiselleştirmek için temel ayarları yapalım' : 'Uygulamayı ihtiyaçlarınıza göre özelleştirin'}
               </p>
             </div>
           </div>
-          <div className="flex gap-2 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             {!isInitialSetup && (
               <button
                 onClick={handleReset}
@@ -287,30 +287,48 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
         )}
 
         {/* Tabs */}
-        <div className="flex space-x-1 mb-6 bg-slate-700 rounded-lg p-1">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 flex-1 justify-center
-                ${activeTab === tab.id
-                  ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-600'}
-              `}
+        <div className="mb-4 sm:mb-6">
+          {/* Mobile Tab Selector */}
+          <div className="sm:hidden">
+            <select
+              value={activeTab}
+              onChange={(e) => setActiveTab(e.target.value as any)}
+              className="w-full bg-slate-700 text-white rounded-lg p-3 text-sm font-medium border border-slate-600"
             >
-              <tab.icon className="h-4 w-4" />
-              <span>{tab.label}</span>
-            </button>
-          ))}
+              {tabs.map((tab) => (
+                <option key={tab.id} value={tab.id}>
+                  {tab.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          
+          {/* Desktop Tab Navigation */}
+          <div className="hidden sm:flex space-x-1 bg-slate-700 rounded-lg p-1">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`flex items-center space-x-2 px-3 lg:px-4 py-2 rounded-md text-xs lg:text-sm font-medium transition-all duration-200 flex-1 justify-center
+                  ${activeTab === tab.id
+                    ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-600'}
+                `}
+              >
+                <tab.icon className="h-3 w-3 lg:h-4 lg:w-4" />
+                <span className="hidden md:inline">{tab.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="flex-1 overflow-y-auto flex flex-col">
           <div className="space-y-8 flex-1 flex flex-col">
             {/* Appearance Tab */}
             {activeTab === 'appearance' && (
-              <div className="bg-slate-700/40 rounded-xl p-6 shadow-lg border border-slate-600 space-y-6">
-                <h3 className="text-lg font-semibold text-white mb-4 flex items-center space-x-2">
-                  <Palette className="h-5 w-5 text-amber-400" />
+              <div className="bg-slate-700/40 rounded-xl p-3 sm:p-6 shadow-lg border border-slate-600 space-y-4 sm:space-y-6">
+                <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4 flex items-center space-x-2">
+                  <Palette className="h-4 w-4 sm:h-5 sm:w-5 text-amber-400" />
                   <span>Görünüm Ayarları</span>
                 </h3>
 
@@ -319,7 +337,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   <label className="block text-sm font-medium text-slate-300 mb-3">
                     Tema
                   </label>
-                  <div className="grid grid-cols-3 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     {[
                       { value: 'light', label: 'Açık', icon: Sun },
                       { value: 'dark', label: 'Koyu', icon: Moon },
@@ -328,13 +346,13 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                       <button
                         key={theme.value}
                         onClick={() => updateSetting('theme', theme.value as any)}
-                        className={`flex flex-col items-center space-y-2 p-4 rounded-lg border-2 transition-all ${
+                        className={`flex flex-row sm:flex-col items-center justify-start sm:justify-center space-x-3 sm:space-x-0 sm:space-y-2 p-3 sm:p-4 rounded-lg border-2 transition-all ${
                           localSettings.theme === theme.value
                             ? 'border-amber-500 bg-amber-500/10'
                             : 'border-slate-600 hover:border-slate-500'
                         }`}
                       >
-                        <theme.icon className="h-6 w-6 text-slate-300" />
+                        <theme.icon className="h-5 w-5 sm:h-6 sm:w-6 text-slate-300" />
                         <span className="text-sm text-slate-300">{theme.label}</span>
                       </button>
                     ))}
@@ -342,38 +360,38 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                 </div>
 
                 {/* Display Options */}
-                <div className="bg-slate-700/50 rounded-lg p-4 space-y-4">
-                  <h4 className="font-medium text-white">Görüntüleme Seçenekleri</h4>
+                <div className="bg-slate-700/50 rounded-lg p-3 sm:p-4 space-y-3 sm:space-y-4">
+                  <h4 className="font-medium text-white text-sm sm:text-base">Görüntüleme Seçenekleri</h4>
                   
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="text-slate-300">Kompakt Mod</span>
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
+                    <div className="flex-1">
+                      <span className="text-slate-300 text-sm sm:text-base">Kompakt Mod</span>
                       <p className="text-xs text-slate-400">Daha az boşluk, daha fazla içerik</p>
                     </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
+                    <label className="relative inline-flex items-center cursor-pointer self-start sm:self-auto">
                       <input
                         type="checkbox"
                         checked={localSettings.compactMode}
                         onChange={(e) => updateSetting('compactMode', e.target.checked)}
                         className="sr-only peer"
                       />
-                      <div className="w-11 h-6 bg-slate-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+                      <div className="w-10 h-5 sm:w-11 sm:h-6 bg-slate-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 sm:after:h-5 sm:after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
                     </label>
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="text-slate-300">Animasyonlar</span>
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
+                    <div className="flex-1">
+                      <span className="text-slate-300 text-sm sm:text-base">Animasyonlar</span>
                       <p className="text-xs text-slate-400">Geçiş efektleri ve animasyonlar</p>
                     </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
+                    <label className="relative inline-flex items-center cursor-pointer self-start sm:self-auto">
                       <input
                         type="checkbox"
                         checked={localSettings.animationsEnabled}
                         onChange={(e) => updateSetting('animationsEnabled', e.target.checked)}
                         className="sr-only peer"
                       />
-                      <div className="w-11 h-6 bg-slate-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+                      <div className="w-10 h-5 sm:w-11 sm:h-6 bg-slate-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 sm:after:h-5 sm:after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
                     </label>
                   </div>
                 </div>
